@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Spring Boot Thymeleaf Hello World Example</title>
+    <link rel="stylesheet" th:href="@{/main.css}"/>
+    <link th:href="@{/jquery-3.5.1.min.js}"></link>
+    <script defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDJZKw9mlX49vr0vkw4jd7xj2HuVPmCuw&callback=initMap">
+    </script>
+</head>
+
+<body>
+<main role="main" class="container">
+    <div class="starter-template">
+        <h1>Spring Boot Web Thymeleaf Example</h1>
+
+        <br/>
+        <a href="/web/tracelocation"></a>
+    </div>
+</main>
+</body>
+<style type="text/css">
+    /* Optional: Makes the sample page fill the window. */
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+</style>
+</html>

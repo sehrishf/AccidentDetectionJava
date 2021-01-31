@@ -1,0 +1,50 @@
+package com.sehrish.accidentdetect.controller;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sehrish.accidentdetect.dto.AccidentDto;
+import com.sehrish.accidentdetect.dto.Candidate;
+import com.sehrish.accidentdetect.dto.NearestHospitalsResponse;
+import com.sehrish.accidentdetect.entity.Accident;
+import com.sehrish.accidentdetect.entity.Hospital;
+import com.sehrish.accidentdetect.repository.AccidentRepository;
+import com.sehrish.accidentdetect.repository.HospitalRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+import org.springframework.http.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+@Controller
+public class AccidentController {
+
+    @Autowired
+    AccidentRepository accidentRepository;
+
+
+
+    @GetMapping("/web/accidentlocation")
+    public String Test(@Param("uid") String uid, Model model) throws JsonProcessingException {
+      //  FindNearestHostipal("50.1201","8.6521");
+        long userId = Long.parseLong(uid);
+        Accident accident = accidentRepository.findFirstByUserIdOrderByIdDesc(userId);
+        if (accident == null)
+        {
+            AccidentDto accidentDto =new AccidentDto();
+        }
+        else{  AccidentDto accidentDto = AccidentDto.builder()
+                .userId(userId)
+                .lat(accident.getLat())
+                .lon(accident.getLon())
+                .build();
+            model.addAttribute("accidentDto", accidentDto);
+        }
+
+
+        return "accidentlocation";
+    }
+
+  }
