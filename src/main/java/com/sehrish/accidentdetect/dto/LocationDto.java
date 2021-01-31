@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @Builder
@@ -16,4 +17,5 @@ public class LocationDto {
     private String lat;
     private String lon;
     private long userId;
+    private Date createdDate;
 }

@@ -1,22 +1,13 @@
 package com.sehrish.accidentdetect.controller;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sehrish.accidentdetect.dto.AccidentDto;
-import com.sehrish.accidentdetect.dto.Candidate;
-import com.sehrish.accidentdetect.dto.NearestHospitalsResponse;
 import com.sehrish.accidentdetect.entity.Accident;
-import com.sehrish.accidentdetect.entity.Hospital;
 import com.sehrish.accidentdetect.repository.AccidentRepository;
-import com.sehrish.accidentdetect.repository.HospitalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
-import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @Controller
 public class AccidentController {
@@ -39,6 +30,7 @@ public class AccidentController {
                 .userId(userId)
                 .lat(accident.getLat())
                 .lon(accident.getLon())
+                .createDate(accident.getCreatedDate())
                 .build();
             model.addAttribute("accidentDto", accidentDto);
         }

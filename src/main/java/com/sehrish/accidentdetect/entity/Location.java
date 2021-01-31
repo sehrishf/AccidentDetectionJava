@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Entity
 @Data
@@ -22,4 +23,6 @@ public class Location {
     private String lon;
 
     private long userId;
+
+    private Date createdDate;
 }

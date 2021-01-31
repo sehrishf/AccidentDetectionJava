@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -14,4 +16,5 @@ public class AccidentDto {
     private String lat;
     private String lon;
     private long userId;
+    private Date createDate;
 }

@@ -28,6 +28,7 @@ public class HomeController {
                 .userId(userId)
                 .lat(location.getLat())
                 .lon(location.getLon())
+                .createdDate(location.getCreatedDate())
                 .build();
 
         model.addAttribute("locationObj", locationDto);

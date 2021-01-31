@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -44,6 +45,7 @@ public class ApiController {
         location.setLat(locationDto.getLat());
         location.setLon(locationDto.getLon());
         location.setUserId(locationDto.getUserId());
+        location.setCreatedDate(new Date());
 
         location = locationRepository.saveAndFlush(location);
 
@@ -72,6 +74,7 @@ public class ApiController {
         accident.setLat(accidentDtoo.getLat());
         accident.setLon(accidentDtoo.getLon());
         accident.setUserId(accidentDtoo.getUserId());
+        accident.setCreatedDate(new Date());
 
         accident = accidentRepository.saveAndFlush(accident);
 
@@ -115,11 +118,9 @@ public class ApiController {
             hospital.setAccidentId(accidentid);
             hospital.setLat(candidate.getGeometry().getLocation().lat + "");
             hospital.setLon(candidate.getGeometry().getLocation().lng + "");
-
+            hospital.setCreatedDate(new Date());
             hospitalRepository.saveAndFlush(hospital);
         //}
-        //ObjectMapper objectMapper = new ObjectMapper();
-        // Candidates candidates = objectMapper.readValue(response.getBody(), Candidates.class);
 
     }
 
