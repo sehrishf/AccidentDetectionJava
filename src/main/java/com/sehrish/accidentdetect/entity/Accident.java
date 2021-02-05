@@ -2,9 +2,7 @@ package com.sehrish.accidentdetect.entity;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -16,13 +14,18 @@ public class Accident {
     @GeneratedValue
     private long id;
 
-
     private String lat;
-
 
     private String lon;
 
-    private long userId;
+    @OneToOne
+    private Hospital hospital;
+
+    @OneToOne
+    private User user;
 
     private Date createdDate;
+
+    @Column(nullable = false, columnDefinition="Boolean default false")
+    private Boolean processed;
 }

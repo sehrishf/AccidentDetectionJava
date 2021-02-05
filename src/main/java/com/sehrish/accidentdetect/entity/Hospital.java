@@ -1,6 +1,5 @@
 package com.sehrish.accidentdetect.entity;
 
-
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -11,6 +10,7 @@ import java.util.Date;
 @Entity
 @Data
 public class Hospital {
+
     @Id
     @GeneratedValue
     private long id;
@@ -21,8 +21,5 @@ public class Hospital {
 
     private String lon;
 
-    private long accidentId;
-
-    private Date createdDate;
 
 }
