@@ -57,6 +57,12 @@ public class HomeController {
         return "tracelocation";
     }
 
+    @GetMapping("/login")
+    public String showLoginForm(Model model) {
+        model.addAttribute("HospitalUser", new HospitalUser());
+        return "login";
+    }
+
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         model.addAttribute("HospitalUser", new HospitalUser());
@@ -74,6 +80,23 @@ public class HomeController {
 
         return "register_success";
     }
+
+    @PostMapping("/verify_user")
+    public String verifyUser(HospitalUser user) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+
+        user.setPassword(encodedPassword);
+
+        var hospitalUser=hospitalUserRepository.findByEmail(user.getEmail());
+        if (hospitalUser != null)
+        {
+            return "accidents";
+        }
+
+        return "error";
+    }
+
     @GetMapping("/users")
     public String listUsers(Model model) {
         List<HospitalUser> listUsers = hospitalUserRepository.findAll();

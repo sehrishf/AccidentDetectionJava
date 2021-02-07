@@ -4,6 +4,7 @@ import lombok.Data;
 import net.bytebuddy.implementation.bind.MethodDelegationBinder;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -16,4 +17,11 @@ public class User {
     private String mobileno;
 
     private String name;
+
+    private String email;
+
+    private String password;
+
+    @OneToMany
+    private List<UserFamilyContact> userFamilyContacts;
 }
