@@ -9,4 +9,7 @@ public interface HospitalUserRepository extends JpaRepository<HospitalUser, Long
 
  public HospitalUser findByEmail(String email);
 
+
+ public HospitalUser findByHospitalname(String name);
+
 }

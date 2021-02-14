@@ -15,8 +15,6 @@ public class AccidentController {
     @Autowired
     AccidentRepository accidentRepository;
 
-
-
     @GetMapping("/web/accidentlocation")
     public String Test(@Param("uid") String uid, Model model) throws JsonProcessingException {
       //  FindNearestHostipal("50.1201","8.6521");

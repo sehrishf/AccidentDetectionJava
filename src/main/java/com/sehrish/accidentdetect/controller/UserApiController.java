@@ -27,9 +27,20 @@ public class UserApiController {
     public User save(@RequestBody UserDto userDto) {
 
         User user = new User();
+
+        user =userRepository.findByMobileno(user.getMobileno());
+
+        if(user == null)
+        {
+            user = new User();
+            user.setId(0);
+            return user;
+        }
+        user = new User();
         user.setName(userDto.getName());
         user.setMobileno(userDto.getMobileno());
         user.setEmail(userDto.getEmail());
+
         String encodedPassword = bCryptPasswordEncoder.encode(userDto.getPassword());
         user.setPassword(encodedPassword);
 

@@ -21,7 +21,7 @@
 <body>
 <div class="container text-center">
     <div>
-        <h1>User Registration - Sign Up</h1>
+        <h1>User Registration - Sign In</h1>
     </div>
     <form th:action="@{/verify_user}" th:object="${HospitalUser}"
           method="post" style="max-width: 600px; margin: 0 auto;">
@@ -36,7 +36,7 @@
             <div class="form-group row">
                 <label class="col-4 col-form-label">Password: </label>
                 <div class="col-8">
-                    <input type="password" th:field="*{password}" class="form-control"
+                    <input type="password" value="123456" th:field="*{password}" class="form-control"
                            required minlength="6" maxlength="10"/>
                 </div>
             </div>

@@ -22,10 +22,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private DataSource dataSource;
 
     @Override
-    protected  void configure(HttpSecurity security) throws  Exception{
-        security.csrf().ignoringAntMatchers("/api/**");
-        security.httpBasic().disable();
+    protected  void configure(HttpSecurity security) throws  Exception {
 
+        security.csrf().ignoringAntMatchers("/api/**");
+        security.csrf().ignoringAntMatchers("/process_register");
+        security.csrf().disable();
+
+        security.httpBasic().disable();
     }
 
     @Bean

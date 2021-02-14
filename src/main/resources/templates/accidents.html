@@ -27,7 +27,17 @@
 
             </p>
             <input type="submit" value="Sign Out" />
+
         </form>
+        <!-- Button trigger modal -->
+        <button
+                type="button"
+                class="btn btn-primary"
+                data-mdb-toggle="modal"
+                data-mdb-target="#exampleModal"
+        >
+            Launch demo modal
+        </button>
     </div>
     <div>
         <h1>List of Accidents</h1>
@@ -43,12 +53,45 @@
                 <th>Accident Location</th>
                 <th>Action Needed</th>
                 <th>Show In Map</th>
+                <th style="display: none" >ID</th>
+                <th>Show In Map</th>
             </tr>
             </thead>
             <tbody id="tableBody">
             </tbody>
         </table>
     </div>
+
+    <!-- Modal -->
+    <div
+            class="modal fade"
+            id="exampleModal"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+    >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button
+                            type="button"
+                            class="btn-close"
+                            data-mdb-dismiss="modal"
+                            aria-label="Close"
+                    ></button>
+                </div>
+                <div class="modal-body">...</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <script type="application/javascript">
@@ -80,20 +123,26 @@
                 var actionColor = accidentObj.processed == true ? "green" : "red";
 
                 var row =
-                    "<tr>" +
+                    "<tr style=\"cursor: pointer\" >" +
                         "<td> " + personObj.name  + " </td> " +
                         "<td> " + personObj.mobileno  + " </td> " +
                         "<td> " + hospitalObj.name  + " </td> " +
                         "<td> " + accidentObj.lat  + " </td> " +
                         "<td> " + actionNeeded  + " </td> " +
                         "<td><button>Google Map</button></td> " +
+                        "<td style='display: none'>"+accidentObj.id+"</td> " +
+                    "<td> <a target='_blank' href='/show-accident-in-map?lat="+accidentObj.lat+"&lon="+accidentObj.lon+"'>Google Map</a></td>"+
                     "</tr>";
 
                 $('#tableBody').append(row);
             }
 
         });
+
     }
+    $('#myModal').on('shown.bs.modal', function () {
+        $('#myInput').trigger('focus')
+    })
 </script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.sehrish.accidentdetect.controller;
 
+import com.sehrish.accidentdetect.dto.AccidentDto;
 import com.sehrish.accidentdetect.dto.HomeDto;
 import com.sehrish.accidentdetect.dto.LocationDto;
 import com.sehrish.accidentdetect.entity.Accident;
@@ -10,6 +11,7 @@ import com.sehrish.accidentdetect.repository.AccidentRepository;
 import com.sehrish.accidentdetect.repository.HospitalRepository;
 import com.sehrish.accidentdetect.repository.HospitalUserRepository;
 import com.sehrish.accidentdetect.repository.LocationRepository;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -71,27 +74,33 @@ public class HomeController {
     }
     @PostMapping("/process_register")
     public String processRegister(HospitalUser user) {
+
+        var userData=hospitalUserRepository.findByHospitalname(user.getHospitalname());
+        if(userData != null){
+               // it should be sugn up page but it required model to pass hwo can i??
+            return "index";
+        }
+
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
-
         user.setPassword(encodedPassword);
-
         hospitalUserRepository.save(user);
-
         return "register_success";
     }
-
     @PostMapping("/verify_user")
-    public String verifyUser(HospitalUser user) {
+    public String verifyUser(HospitalUser user, HttpSession session) {
+
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
 
         user.setPassword(encodedPassword);
 
         var hospitalUser=hospitalUserRepository.findByEmail(user.getEmail());
+        session.setAttribute("hospitalUser", hospitalUser);
+
         if (hospitalUser != null)
         {
-            return "accidents";
+            return "redirect:hospital/accidents";
         }
 
         return "error";
@@ -103,6 +112,17 @@ public class HomeController {
         model.addAttribute("listUsers", listUsers);
 
         return "hospitals";
+    }
+
+    @GetMapping("/show-accident-in-map")
+    public String GetaccidentMap(@Param("lat") String lat,@Param("lon")String lon, Model model) {
+
+        AccidentDto accidentDto =new AccidentDto();
+        accidentDto.setLat(lat);
+        accidentDto.setLon(lon);
+        model.addAttribute("accidentDto", accidentDto);
+
+        return "traceaccidentlocation";
     }
 
 
