@@ -17,4 +17,5 @@ public class AccidentDto {
     private String lon;
     private long userId;
     private Date createDate;
+    private boolean isProcessed ;
 }

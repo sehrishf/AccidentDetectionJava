@@ -16,7 +16,19 @@ public class HospitalController {
 
     @GetMapping("accidents")
     public String accidents() {
+
         return "accidents";
     }
 
-  }
+    @GetMapping("show-accident-in-map")
+    public String GetaccidentMap(@Param("lat") String lat,@Param("lon")String lon, Model model) {
+
+        AccidentDto accidentDto =new AccidentDto();
+        accidentDto.setLat(lat);
+        accidentDto.setLon(lon);
+        model.addAttribute("accidentDto", accidentDto);
+        return "traceaccidentlocation";
+    }
+
+
+}

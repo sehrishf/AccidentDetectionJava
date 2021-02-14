@@ -37,7 +37,11 @@ public class HomeController {
     @Autowired
     AccidentRepository accidentRepository;
 
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
+   // private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("")
     public String main(HomeDto model) {
@@ -90,16 +94,14 @@ public class HomeController {
     @PostMapping("/verify_user")
     public String verifyUser(HospitalUser user, HttpSession session) {
 
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-
-        user.setPassword(encodedPassword);
+    //  BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+   //   String encodedPassword = passwordEncoder.encode(user.getPassword());
+  //   user.setPassword(encodedPassword);
 
         var hospitalUser=hospitalUserRepository.findByEmail(user.getEmail());
-        session.setAttribute("hospitalUser", hospitalUser);
 
-        if (hospitalUser != null)
-        {
+        if(bCryptPasswordEncoder.matches(user.getPassword(),hospitalUser.getPassword())){
+            session.setAttribute("hospitalUser", hospitalUser);
             return "redirect:hospital/accidents";
         }
 
@@ -110,20 +112,9 @@ public class HomeController {
     public String listUsers(Model model) {
         List<HospitalUser> listUsers = hospitalUserRepository.findAll();
         model.addAttribute("listUsers", listUsers);
-
         return "hospitals";
     }
 
-    @GetMapping("/show-accident-in-map")
-    public String GetaccidentMap(@Param("lat") String lat,@Param("lon")String lon, Model model) {
-
-        AccidentDto accidentDto =new AccidentDto();
-        accidentDto.setLat(lat);
-        accidentDto.setLon(lon);
-        model.addAttribute("accidentDto", accidentDto);
-
-        return "traceaccidentlocation";
-    }
 
 
     @GetMapping("/accidents")

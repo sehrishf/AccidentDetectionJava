@@ -17,4 +17,5 @@ public interface AccidentRepository extends JpaRepository<Accident, Long> {
 
     List<Accident> findAllByHospital(Hospital hospital);
 
+    Accident findById(long id);
 }
