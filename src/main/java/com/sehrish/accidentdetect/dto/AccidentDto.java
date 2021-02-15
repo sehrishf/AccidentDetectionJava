@@ -1,5 +1,8 @@
 package com.sehrish.accidentdetect.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,5 +20,7 @@ public class AccidentDto {
     private String lon;
     private long userId;
     private Date createDate;
-    private boolean isProcessed ;
+
+    @JsonProperty
+    private boolean processed ;
 }

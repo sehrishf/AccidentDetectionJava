@@ -15,7 +15,7 @@ public class UserInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object object) throws Exception {
 
-        HospitalUser hospitalUser = (HospitalUser) SessionHelper.getSession().getAttribute("hospitalUser");
+        HospitalUser hospitalUser = SessionHelper.getLoggedInHospital();
         if(hospitalUser != null) {
             return true;
         }

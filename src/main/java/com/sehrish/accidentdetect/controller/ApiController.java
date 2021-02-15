@@ -1,11 +1,10 @@
 package com.sehrish.accidentdetect.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.sehrish.accidentdetect.SessionHelper;
 import com.sehrish.accidentdetect.dto.*;
-import com.sehrish.accidentdetect.entity.Accident;
-import com.sehrish.accidentdetect.entity.Hospital;
+import com.sehrish.accidentdetect.entity.*;
 import com.sehrish.accidentdetect.entity.Location;
-import com.sehrish.accidentdetect.entity.User;
 import com.sehrish.accidentdetect.repository.AccidentRepository;
 import com.sehrish.accidentdetect.repository.HospitalRepository;
 import com.sehrish.accidentdetect.repository.LocationRepository;
@@ -166,14 +165,10 @@ public class ApiController {
 
     @GetMapping("/get-accidents")
     public List<Accident> getAccidents() {
-        //String hospitalName = takeHospitalNameFromSession();
 
-        String hospitalName = "St. Elisabethen Hospital Frankfurt";
-        Hospital hospital = hospitalRepository.findFirstByName(hospitalName);
-
-        List<Accident> accidents = accidentRepository.findAllByHospital(hospital);
-
-
+        HospitalUser loggedInHosppitalUser=SessionHelper.getLoggedInHospital();
+        Hospital hospital = hospitalRepository.findFirstByName(loggedInHosppitalUser.getHospitalname());
+        List<Accident> accidents = accidentRepository.findAllByHospitalOrderByCreatedDateDescProcessedAsc(hospital);
 
         return accidents;
     }

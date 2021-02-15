@@ -89,27 +89,30 @@
 </div>
 
 <script type="application/javascript">
-
+    getLatestAccidents();
     function setIsProcess(id, obj){
-        var AccidentDto = new Object();
-        AccidentDto.id = id;
-        AccidentDto.isProcessed=$(obj).is(":checked");
+
+        let accidentData = {
+            id: id,
+            processed: 0
+        }
+
         if ($(obj).is(":checked")) {
+            accidentData.processed=1;
             $.ajax({
                 url: "http://localhost:8085/api/accident/updateisprocess",
                 type: "POST",
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify(AccidentDto),
+                contentType: "application/json",
+                data: JSON.stringify(accidentData),
                 dataType: "json",
             }).then(function (data) {
-
 
             });
         }
     }
     var interval = setInterval(function () {
         getLatestAccidents();
-    }, 5000);
+    }, 9000);
 
     function getLatestAccidents() {
 

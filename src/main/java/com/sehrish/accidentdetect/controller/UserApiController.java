@@ -1,5 +1,6 @@
 package com.sehrish.accidentdetect.controller;
 
+import com.sehrish.accidentdetect.dto.AccidentDto;
 import com.sehrish.accidentdetect.dto.LocationDto;
 import com.sehrish.accidentdetect.dto.UserDto;
 import com.sehrish.accidentdetect.entity.Location;
@@ -8,10 +9,8 @@ import com.sehrish.accidentdetect.repository.LocationRepository;
 import com.sehrish.accidentdetect.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
@@ -61,6 +60,7 @@ public class UserApiController {
 
         return null;
     }
+
 
 }
 

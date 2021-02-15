@@ -1,11 +1,7 @@
 package com.sehrish.accidentdetect.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sehrish.accidentdetect.dto.*;
 import com.sehrish.accidentdetect.entity.Accident;
-import com.sehrish.accidentdetect.entity.Hospital;
-import com.sehrish.accidentdetect.entity.Location;
-import com.sehrish.accidentdetect.entity.User;
 import com.sehrish.accidentdetect.repository.AccidentRepository;
 import com.sehrish.accidentdetect.repository.HospitalRepository;
 import com.sehrish.accidentdetect.repository.LocationRepository;
@@ -15,6 +11,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -41,13 +38,14 @@ public class AccidentApiController {
     @PostMapping("/updateisprocess")
     public Accident save(@RequestBody AccidentDto accidentDto) {
 
-
         Accident accident=accidentRepository.findById(accidentDto.getId());
-        accident.setProcessed(accident.getProcessed());
+        accident.setProcessed(accidentDto.isProcessed());
         accident = accidentRepository.saveAndFlush(accident);
 
         return accident;
     }
+
+
 
 
 

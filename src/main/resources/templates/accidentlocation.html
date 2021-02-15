@@ -61,31 +61,6 @@
 
             }
 
-
-            function getLatestLocation(userid) {
-                var Location = {userId: userid};
-                $.ajax({
-                    url: "http://localhost:8085/api/location/get-location-by-userid",
-                    type: "POST",
-                    data: JSON.stringify(Location),
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                }).then(function (data) {
-
-                    $('.greeting-id').append(data.id);
-                    $('.greeting-content').append(data.lon);
-
-                    var newLatLng = new google.maps.LatLng(data.lat, data.lon);
-
-                    marker.setPosition({
-                        lat: parseFloat(data.lat),
-                        lng: parseFloat(data.lon)
-                    });
-
-                });
-            }
-
-
         </script>
     </div>
 </main>

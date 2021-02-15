@@ -15,7 +15,9 @@ public interface AccidentRepository extends JpaRepository<Accident, Long> {
 
     Accident findFirstByUserIdOrderByIdDesc(long userId);
 
-    List<Accident> findAllByHospital(Hospital hospital);
+    List<Accident> findAllByHospitalOrderByCreatedDate(Hospital hospital);
+
+    List<Accident> findAllByHospitalOrderByCreatedDateDescProcessedAsc(Hospital hospital);
 
     Accident findById(long id);
 }
