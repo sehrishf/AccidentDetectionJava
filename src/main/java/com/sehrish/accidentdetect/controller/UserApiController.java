@@ -8,6 +8,7 @@ import com.sehrish.accidentdetect.entity.Location;
 import com.sehrish.accidentdetect.entity.User;
 import com.sehrish.accidentdetect.entity.UserFamilyContact;
 import com.sehrish.accidentdetect.repository.LocationRepository;
+import com.sehrish.accidentdetect.repository.UserFriendRepository;
 import com.sehrish.accidentdetect.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,6 +27,9 @@ public class UserApiController {
 
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    UserFriendRepository userFriendRepository;
 
     @PostMapping("/save")
     public User save(@RequestBody UserDto userDto) {
@@ -71,20 +75,28 @@ public class UserApiController {
 
         User user = userRepository.findById(Long.parseLong(userFriendDto.getUserid()));
 
-        List<UserFamilyContact> userFamilyContacts=new ArrayList<>();
-
+        List<UserFamilyContact> userFamilyContacts= user.getUserFamilyContacts();
         UserFamilyContact userFamilyContact=new UserFamilyContact();
         userFamilyContact.setMobileno(userFriendDto.getMobileno());
 
-        userFamilyContacts.add(userFamilyContact);
-
+        UserFamilyContact Data=userFriendRepository.saveAndFlush(userFamilyContact);
+        userFamilyContacts.add(Data);
         user.setUserFamilyContacts(userFamilyContacts);
-
 
         userRepository.saveAndFlush(user);
 
         return user;
     }
+
+    @PostMapping("/friendslist")
+    public List<UserFamilyContact> getfriendinfo(@RequestBody UserDto userDto) {
+
+        User user = userRepository.findById(userDto.getId());
+        return user.getUserFamilyContacts();
+
+
+    }
+
 
 }
 
