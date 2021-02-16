@@ -16,7 +16,8 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
         registry.addInterceptor(userInterceptor)
                 .addPathPatterns("/hospital/**")
                 .excludePathPatterns("/login/**")
-                .excludePathPatterns("/register/**");
+                .excludePathPatterns("/register/**")
+                .excludePathPatterns("/api/**");
     }
 
 }

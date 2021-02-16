@@ -3,14 +3,19 @@ package com.sehrish.accidentdetect.controller;
 import com.sehrish.accidentdetect.dto.AccidentDto;
 import com.sehrish.accidentdetect.dto.LocationDto;
 import com.sehrish.accidentdetect.dto.UserDto;
+import com.sehrish.accidentdetect.dto.UserFriendDto;
 import com.sehrish.accidentdetect.entity.Location;
 import com.sehrish.accidentdetect.entity.User;
+import com.sehrish.accidentdetect.entity.UserFamilyContact;
 import com.sehrish.accidentdetect.repository.LocationRepository;
 import com.sehrish.accidentdetect.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -29,7 +34,7 @@ public class UserApiController {
 
         user =userRepository.findByMobileno(user.getMobileno());
 
-        if(user == null)
+        if(user != null)
         {
             user = new User();
             user.setId(0);
@@ -61,6 +66,25 @@ public class UserApiController {
         return null;
     }
 
+    @PostMapping("/friendsinfo")
+    public User savefriendinfo(@RequestBody UserFriendDto userFriendDto) {
+
+        User user = userRepository.findById(Long.parseLong(userFriendDto.getUserid()));
+
+        List<UserFamilyContact> userFamilyContacts=new ArrayList<>();
+
+        UserFamilyContact userFamilyContact=new UserFamilyContact();
+        userFamilyContact.setMobileno(userFriendDto.getMobileno());
+
+        userFamilyContacts.add(userFamilyContact);
+
+        user.setUserFamilyContacts(userFamilyContacts);
+
+
+        userRepository.saveAndFlush(user);
+
+        return user;
+    }
 
 }
 
