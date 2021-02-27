@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserFriendRepository extends JpaRepository<UserFamilyContact, Long> {
 
-
+    UserFamilyContact findById(long id);
 
 }

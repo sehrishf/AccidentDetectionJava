@@ -1,21 +1,19 @@
 package com.sehrish.accidentdetect.controller;
 
-import com.sehrish.accidentdetect.dto.AccidentDto;
-import com.sehrish.accidentdetect.dto.LocationDto;
+import com.sehrish.accidentdetect.dto.RemoveContactDto;
 import com.sehrish.accidentdetect.dto.UserDto;
 import com.sehrish.accidentdetect.dto.UserFriendDto;
-import com.sehrish.accidentdetect.entity.Location;
 import com.sehrish.accidentdetect.entity.User;
 import com.sehrish.accidentdetect.entity.UserFamilyContact;
-import com.sehrish.accidentdetect.repository.LocationRepository;
 import com.sehrish.accidentdetect.repository.UserFriendRepository;
 import com.sehrish.accidentdetect.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -79,7 +77,7 @@ public class UserApiController {
         UserFamilyContact userFamilyContact=new UserFamilyContact();
         userFamilyContact.setMobileno(userFriendDto.getMobileno());
 
-        UserFamilyContact Data=userFriendRepository.saveAndFlush(userFamilyContact);
+        UserFamilyContact Data = userFriendRepository.saveAndFlush(userFamilyContact);
         userFamilyContacts.add(Data);
         user.setUserFamilyContacts(userFamilyContacts);
 
@@ -90,11 +88,19 @@ public class UserApiController {
 
     @PostMapping("/friendslist")
     public List<UserFamilyContact> getfriendinfo(@RequestBody UserDto userDto) {
-
         User user = userRepository.findById(userDto.getId());
         return user.getUserFamilyContacts();
+    }
 
+    @PostMapping("/removefriend")
+    public void removeFriend(@RequestBody RemoveContactDto removeContactDto) {
+        User user = userRepository.findById(removeContactDto.getUserId());
 
+        List<UserFamilyContact> friends = user.getUserFamilyContacts();
+        UserFamilyContact userFamilyContact = userFriendRepository.findById(removeContactDto.getFriendId());
+        friends.remove(userFamilyContact);
+
+        userRepository.saveAndFlush(user);
     }
 
 
