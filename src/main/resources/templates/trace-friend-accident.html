@@ -23,32 +23,24 @@
 
 <body>
 <main role="main" class="container">
-    <div class="starter-template">
 
-        <label class="checkbox-inline">
-            <input type="checkbox" onchange="savePaisa(this)" checked data-toggle="toggle"> Save paisa
-        </label>
+    <div id="map" style="width:90%; height: 500px; margin-left: auto; margin-right: auto"></div>
 
-        <h1>Spring Boot Web Thymeleaf Example</h1>
-
-        <span class="greeting-id">The ID is </span>
-        <span class="greeting-content">The lon is </span>
-    </div>
-    <div id="map" style="width:80%; height: 350px; margin-left: auto; margin-right: auto"></div>
     <div class="col-md-6">
-
         <script th:inline="javascript">
-
             var map;
             var marker;
             /*<![CDATA[*/
             var accidentObj = /*[[${accident}]]*/ 'default';
             /*]]>*/
 
-            let latitude = parseFloat(accidentObj.lat);
-            let longitute = parseFloat(accidentObj.lon);
+            let accidentLatitude = parseFloat(accidentObj.lat);
+            let accidentLongitute = parseFloat(accidentObj.lon);
 
-            function initMap() {
+            let hospitalLatitude = parseFloat(accidentObj.hospital.lat);
+            let hospitalLongitute = parseFloat(accidentObj.hospital.lon);
+
+            /*function initMap() {
                 map = new google.maps.Map(document.getElementById("map"), {
                     center: {
                         lat: latitude,
@@ -64,9 +56,9 @@
                     map,
                     title: "Hello World!",
                 });
-            }
+            }*/
 
-            var interval = setInterval(function () {
+            /*var interval = setInterval(function () {
                 getLatestLocation(accidentObj.userId);
             }, 9000);
 
@@ -88,20 +80,59 @@
                         lng: parseFloat(data.lon)
                     });
                 });
-            }
+            }*/
 
-            function savePaisa(obj) {
-                if ($(obj).prop("checked") == true) {
-                    alert("paisa save karunga marte dam tak")
-                    clearInterval(interval);
-                } else {
-                    alert("thura chala jay paisa 2 dino ka jindegi");
-                    interval = setInterval(function () {
-                        getLatestLocation(accidentObj.userId);
-                    }, 9000);
-                }
-            }
 
+            function initMap() {
+                const map = new google.maps.Map(document.getElementById("map"), {
+                    zoom: 14,
+                    center: {lat: 50.1132, lng: 8.6972},
+                    mapTypeId: "terrain",
+                });
+                marker = new google.maps.Marker({
+                    position: {
+                        lat: accidentLatitude,
+                        lng: accidentLongitute
+                    },
+                    map,
+                    title: "Hello World!",
+                });
+
+                const directionCoordinates = [
+                    {lat: accidentLatitude, lng: accidentLongitute},
+                    {lat: hospitalLatitude, lng: hospitalLongitute},
+                ];
+                const accidentToHospitalPath = new google.maps.Polyline({
+                    path: directionCoordinates,
+                    geodesic: true,
+                    strokeColor: "#FF0000",
+                    strokeOpacity: 1.0,
+                    strokeWeight: 2,
+                });
+                accidentToHospitalPath.setMap(map);
+
+                const hospitalCircle = new google.maps.Circle({
+                    strokeColor: "#51cb18",
+                    strokeOpacity: 0.8,
+                    strokeWeight: 1,
+                    fillColor: "#51cb18",
+                    fillOpacity: 0.35,
+                    map,
+                    center: {lat: hospitalLatitude, lng: hospitalLongitute},
+                    radius: 100,
+                });
+
+                const accidentCircle = new google.maps.Circle({
+                    strokeColor: "#FF0000",
+                    strokeOpacity: 0.8,
+                    strokeWeight: 1,
+                    fillColor: "#FF0000",
+                    fillOpacity: 0.35,
+                    map,
+                    center: {lat: accidentLatitude, lng: accidentLongitute},
+                    radius: 100,
+                });
+            }
         </script>
     </div>
 </main>
