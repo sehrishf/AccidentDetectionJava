@@ -71,15 +71,14 @@ public class ApiController {
     @PostMapping("/save-accident")
     public Accident save(@RequestBody AccidentDto accidentDtoo) throws JsonProcessingException {
 
-
         Accident accident = new Accident();
         accident.setLat(accidentDtoo.getLat());
         accident.setLon(accidentDtoo.getLon());
         accident.setCreatedDate(new Date());
+        accident.setProcessed(false);
 
         // cal google api for get nearest hospital
         Hospital hospital = findNearestHostipal(accidentDtoo.getLat(), accidentDtoo.getLon(), accident.getId());
-        //
 
         User user = userRepository.findById(accidentDtoo.getUserId());
 
@@ -106,7 +105,7 @@ public class ApiController {
                 .queryParam("input", "hospital")
                 .queryParam("inputtype", "textquery")
                 .queryParam("fields", "formatted_address,name,rating,opening_hours,geometry")
-                .queryParam("locationbias", "circle:50@" + lat + "," + lon)
+                .queryParam("locationbias", "circle:1000@" + lat + "," + lon)
                 .queryParam("key", "AIzaSyDDJZKw9mlX49vr0vkw4jd7xj2HuVPmCuw");
 
 
@@ -123,7 +122,17 @@ public class ApiController {
         String hospitalLat = candidate.getGeometry().getLocation().lat + "";
         String hospitalLon = candidate.getGeometry().getLocation().lng + "";
 
-        return hospitalRepository.findFirstByName(hospitalName);
+        Hospital hospital = hospitalRepository.findFirstByName(hospitalName);
+
+        if(hospital == null) {
+            hospital = new Hospital();
+            hospital.setLon(hospitalLon);
+            hospital.setLat(hospitalLat);
+            hospital.setName(hospitalName);
+            hospital = hospitalRepository.saveAndFlush(hospital);
+        }
+
+        return hospital;
     }
 
     @GetMapping("/save-all-hospital")
