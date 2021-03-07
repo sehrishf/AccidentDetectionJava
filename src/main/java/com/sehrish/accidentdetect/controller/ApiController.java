@@ -180,7 +180,7 @@ public class ApiController {
 
         HospitalUser loggedInHosppitalUser=SessionHelper.getLoggedInHospital();
         Hospital hospital = hospitalRepository.findFirstByName(loggedInHosppitalUser.getHospitalname());
-        List<Accident> accidents = accidentRepository.findAllByHospitalOrderByCreatedDateDescProcessedAsc(hospital);
+        List<Accident> accidents = accidentRepository.findAllByHospitalOrderByProcessedAscCreatedDateDesc(hospital);
 
         return accidents;
     }
