@@ -28,7 +28,6 @@
 
     <div class="col-md-6">
         <script th:inline="javascript">
-            var map;
             var marker;
             /*<![CDATA[*/
             var accidentObj = /*[[${accident}]]*/ 'default';
@@ -36,57 +35,13 @@
 
             let accidentLatitude = parseFloat(accidentObj.lat);
             let accidentLongitute = parseFloat(accidentObj.lon);
-
             let hospitalLatitude = parseFloat(accidentObj.hospital.lat);
             let hospitalLongitute = parseFloat(accidentObj.hospital.lon);
-
-            /*function initMap() {
-                map = new google.maps.Map(document.getElementById("map"), {
-                    center: {
-                        lat: latitude,
-                        lng: longitute
-                    },
-                    zoom: 15,
-                });
-                marker = new google.maps.Marker({
-                    position: {
-                        lat: latitude,
-                        lng: longitute
-                    },
-                    map,
-                    title: "Hello World!",
-                });
-            }*/
-
-            /*var interval = setInterval(function () {
-                getLatestLocation(accidentObj.userId);
-            }, 9000);
-
-            function getLatestLocation(userid) {
-                var Location = {userId: userid};
-                $.ajax({
-                    url: "http://localhost:8085/api/location/get-location-by-userid",
-                    type: "POST",
-                    data: JSON.stringify(Location),
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                }).then(function (data) {
-                    $('.greeting-id').append(data.id);
-                    $('.greeting-content').append(data.lon);
-
-                    var newLatLng = new google.maps.LatLng(data.lat, data.lon);
-                    marker.setPosition({
-                        lat: parseFloat(data.lat),
-                        lng: parseFloat(data.lon)
-                    });
-                });
-            }*/
-
 
             function initMap() {
                 const map = new google.maps.Map(document.getElementById("map"), {
                     zoom: 14,
-                    center: {lat: 50.1132, lng: 8.6972},
+                    center: {lat: accidentLatitude, lng: accidentLongitute},
                     mapTypeId: "terrain",
                 });
                 marker = new google.maps.Marker({
@@ -119,7 +74,7 @@
                     fillOpacity: 0.35,
                     map,
                     center: {lat: hospitalLatitude, lng: hospitalLongitute},
-                    radius: 100,
+                    radius: 80,
                 });
 
                 const accidentCircle = new google.maps.Circle({

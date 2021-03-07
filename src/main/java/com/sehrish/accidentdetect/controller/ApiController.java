@@ -77,10 +77,13 @@ public class ApiController {
         accident.setCreatedDate(new Date());
         accident.setProcessed(false);
 
-        // cal google api for get nearest hospital
-        Hospital hospital = findNearestHostipal(accidentDtoo.getLat(), accidentDtoo.getLon(), accident.getId());
-
         User user = userRepository.findById(accidentDtoo.getUserId());
+
+        Date endDateTimeRange = new Date();
+        Date startDateTimeRange = new Date(System.currentTimeMillis() - (4 * 60 * 60 * 1000));
+
+        accidentRepository.findAccidentByUserAndDateTimeRange(startDateTimeRange, endDateTimeRange, user);
+        Hospital hospital = findNearestHostipal(accidentDtoo.getLat(), accidentDtoo.getLon(), accident.getId());
 
         accident.setUser(user);
         accident.setHospital(hospital);

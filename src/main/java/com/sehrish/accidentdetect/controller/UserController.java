@@ -26,8 +26,7 @@ public class UserController {
     private UserRepository userRepository;
 
     @GetMapping("/friend-accident")
-    public String accidentlocation(
-            @Param("uid") String uid, @Param("lat") String lat,
+    public String accidentlocation(@Param("uid") String uid, @Param("lat") String lat,
             @Param("lon") String lon, Model model) {
 
         User user = userRepository.findById(Integer.parseInt(uid));
