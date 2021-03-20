@@ -2,6 +2,7 @@ package com.sehrish.accidentdetect.Service;
 
 import com.pusher.rest.Pusher;
 import com.sehrish.accidentdetect.entity.Location;
+import com.sehrish.accidentdetect.entity.User;
 import com.sehrish.accidentdetect.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class NotificationService {
         pusher.trigger("my-channel", "my-event-" + toUserId, message);
     }
 
-    public void findAllUserNearByToSendNotification(String lat, String lon) throws ParseException {
+    public void findAllUserNearByToSendNotification(String lat, String lon, User user) throws ParseException {
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date today = formatter.parse(formatter.format(new Date()));
@@ -43,7 +44,7 @@ public class NotificationService {
 
         for(Location location: locations) {
 
-            if(alreadySentUserId.contains(location.getUserId()) == false) {
+            if(location.getUserId() != user.getId() && alreadySentUserId.contains(location.getUserId()) == false) {
 
                 double distance = distanceInMeter(lat, lon, location.getLat(), location.getLon());
                 if(distance <= RADIUS_FOR_OTHER_USER_IN_METER) {

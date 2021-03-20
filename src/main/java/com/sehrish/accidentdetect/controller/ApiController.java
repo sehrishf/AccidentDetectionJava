@@ -20,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -44,6 +45,8 @@ public class ApiController {
 
     @PostMapping("/save")
     public Location save(@RequestBody LocationDto locationDto) {
+
+
 
         Location location = new Location();
         location.setLat(locationDto.getLat());
@@ -95,7 +98,7 @@ public class ApiController {
         accident = accidentRepository.saveAndFlush(accident);
 
         try {
-            notificationService.findAllUserNearByToSendNotification(accidentDtoo.getLat(), accidentDtoo.getLon());
+            notificationService.findAllUserNearByToSendNotification(accidentDtoo.getLat(), accidentDtoo.getLon(), user);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -187,11 +190,15 @@ public class ApiController {
     }
 
     @GetMapping("/get-accidents")
-    public List<Accident> getAccidents() {
+    public List<Accident> getAccidents() throws ParseException {
 
         HospitalUser loggedInHosppitalUser=SessionHelper.getLoggedInHospital();
         Hospital hospital = hospitalRepository.findFirstByName(loggedInHosppitalUser.getHospitalname());
-        List<Accident> accidents = accidentRepository.findAllByHospitalOrderByProcessedAscCreatedDateDesc(hospital);
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date today = formatter.parse(formatter.format(new Date()));
+
+        List<Accident> accidents = accidentRepository.findAllByHospitalOrderByProcessedAscCreatedDateDesc(today, hospital);
 
         return accidents;
     }

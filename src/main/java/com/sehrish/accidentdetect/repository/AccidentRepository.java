@@ -2,6 +2,7 @@ package com.sehrish.accidentdetect.repository;
 
 import com.sehrish.accidentdetect.entity.Accident;
 import com.sehrish.accidentdetect.entity.Hospital;
+import com.sehrish.accidentdetect.entity.Location;
 import com.sehrish.accidentdetect.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -25,7 +26,11 @@ public interface AccidentRepository extends JpaRepository<Accident, Long> {
 
     List<Accident> findAllByHospitalOrderByCreatedDate(Hospital hospital);
 
-    List<Accident> findAllByHospitalOrderByProcessedAscCreatedDateDesc(Hospital hospital);
+    //List<Accident> findAllByHospitalOrderByProcessedAscCreatedDateDesc(Hospital hospital);
+
+
+    @Query("select a from Accident a where a.hospital = :hospital and a.createdDate >= :today order by a.processed asc, a.createdDate desc")
+    List<Accident> findAllByHospitalOrderByProcessedAscCreatedDateDesc(Date today, Hospital hospital);
 
     Accident findById(long id);
 }
