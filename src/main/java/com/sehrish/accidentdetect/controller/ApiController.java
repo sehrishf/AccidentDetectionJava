@@ -1,6 +1,7 @@
 package com.sehrish.accidentdetect.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.sehrish.accidentdetect.Service.NotificationService;
 import com.sehrish.accidentdetect.SessionHelper;
 import com.sehrish.accidentdetect.dto.*;
 import com.sehrish.accidentdetect.entity.*;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -36,6 +38,9 @@ public class ApiController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    NotificationService notificationService;
 
     @PostMapping("/save")
     public Location save(@RequestBody LocationDto locationDto) {
@@ -88,6 +93,12 @@ public class ApiController {
         accident.setUser(user);
         accident.setHospital(hospital);
         accident = accidentRepository.saveAndFlush(accident);
+
+        try {
+            notificationService.findAllUserNearByToSendNotification(accidentDtoo.getLat(), accidentDtoo.getLon());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         return accident;
     }
